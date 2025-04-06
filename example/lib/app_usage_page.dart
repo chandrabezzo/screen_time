@@ -34,6 +34,7 @@ class AppUsagePage extends StatelessWidget {
                     Text(
                       "Last Time Used: ${app.lastTimeUsed?.toLocal().toString()}",
                     ),
+                    Text("Category: ${app.category.name}"),
                   ],
                 ),
               ],

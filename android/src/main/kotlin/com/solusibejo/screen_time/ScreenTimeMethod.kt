@@ -19,6 +19,7 @@ import com.solusibejo.screen_time.const.ScreenTimePermissionStatus
 import com.solusibejo.screen_time.const.ScreenTimePermissionType
 import com.solusibejo.screen_time.const.UsageInterval
 import com.solusibejo.screen_time.service.AppMonitoringService
+import com.solusibejo.screen_time.util.ApplicationInfoUtil
 import com.solusibejo.screen_time.util.IconUtil
 import com.solusibejo.screen_time.util.IntExtension.timeInString
 import com.solusibejo.screen_time.util.UsageStatsUtil
@@ -57,20 +58,8 @@ object ScreenTimeMethod {
 
             val appMap = ArrayList<MutableMap<String, Any?>>()
 
-            val categoryMap = mapOf(
-                ApplicationInfo.CATEGORY_GAME to "Game",
-                ApplicationInfo.CATEGORY_AUDIO to "Audio",
-                ApplicationInfo.CATEGORY_VIDEO to "Video",
-                ApplicationInfo.CATEGORY_IMAGE to "Image",
-                ApplicationInfo.CATEGORY_SOCIAL to "Social",
-                ApplicationInfo.CATEGORY_NEWS to "News",
-                ApplicationInfo.CATEGORY_MAPS to "Maps",
-                ApplicationInfo.CATEGORY_PRODUCTIVITY to "Productivity",
-                ApplicationInfo.CATEGORY_UNDEFINED to "Undefined"
-            )
-
             for (app in apps){
-                val appCategory = categoryMap[app.category] ?: "Undefined"
+                val appCategory = ApplicationInfoUtil.category(app.category)
                 val packageInfo = packageManager.getPackageInfo(app.packageName, 0)
                 val appIcon = IconUtil.asBase64(
                     packageManager,
@@ -287,6 +276,8 @@ object ScreenTimeMethod {
                     Field.firstTime to usageStat.firstTimeStamp,
                     // The last recorded timestamp when the app was used.
                     Field.lastTime to usageStat.lastTimeStamp,
+                    // The category of the app
+                    Field.category to ApplicationInfoUtil.category(appInfo.category)
                 )
 
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){

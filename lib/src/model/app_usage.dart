@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
+import 'app_category.dart';
+
 class BaseAppUsage {
   final bool status;
   final List<AppUsage> data;
@@ -35,6 +37,7 @@ class AppUsage {
   final DateTime? lastTime;
   final DateTime? usageTime;
   final Uint8List? iconInBytes;
+  final AppCategory category;
 
   AppUsage({
     this.appName,
@@ -44,6 +47,7 @@ class AppUsage {
     this.lastTime,
     this.usageTime,
     this.iconInBytes,
+    this.category = AppCategory.undefined,
   });
 
   factory AppUsage.fromJson(Map<String, dynamic> json) => AppUsage(
@@ -64,6 +68,10 @@ class AppUsage {
         iconInBytes: (json["appIcon"] != null)
             ? base64Decode(json["appIcon"].replaceAll("\n", ""))
             : null,
+        category: AppCategory.values.firstWhere(
+          (element) => element.name == json["category"],
+          orElse: () => AppCategory.undefined,
+        ),
       );
 
   Map<String, dynamic> toJson() => {
@@ -74,5 +82,6 @@ class AppUsage {
         "lastTime": lastTime?.toIso8601String(),
         "usageTime": usageTime?.toIso8601String(),
         "appIcon": iconInBytes,
+        "category": category.name,
       };
 }
