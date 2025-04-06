@@ -1,1 +1,5 @@
-enum ScreenTimePermissionType { appUsage, accessibilitySettings }
+enum ScreenTimePermissionType {
+  appUsage,
+  accessibilitySettings,
+  manageOverlayPermission
+}

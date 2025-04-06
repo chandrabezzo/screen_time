@@ -3,6 +3,7 @@ package com.solusibejo.screen_time.const
 object Argument {
     const val startTimeInMillisecond = "startTimeInMillisecond"
     const val endTimeInMillisecond = "endTimeInMillisecond"
+    const val durationInMillisecond = "durationInMillisecond"
     const val interval = "interval"
     const val permissionType = "permissionType"
     const val lookbackTimeMs = "lookbackTimeMs"

@@ -17,6 +17,7 @@ export 'src/model/monitoring_app_usage.dart';
 export 'src/model/request_permission_model.dart';
 export 'src/model/usage_interval.dart';
 export 'src/model/screen_time_permission_type.dart';
+export 'src/util/json_converter_util.dart';
 
 class ScreenTime {
   Future<List<InstalledApp>> installedApps({
@@ -139,5 +140,19 @@ class ScreenTime {
       interval: interval,
       lookbackTimeMs: lookbackTimeMs,
     );
+  }
+
+  Future<bool> startFocusSession({
+    List<String> packagesName = const [],
+    required int durationInMillisecond,
+  }) {
+    return ScreenTimePlatform.instance.startFocusSession(
+      packagesName: packagesName,
+      durationInMillisecond: durationInMillisecond,
+    );
+  }
+
+  Future<bool> stopFocusSession() {
+    return ScreenTimePlatform.instance.stopFocusSession();
   }
 }

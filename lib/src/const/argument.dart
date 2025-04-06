@@ -1,6 +1,7 @@
 class Argument {
   static const String startTimeInMillisecond = 'startTimeInMillisecond';
   static const String endTimeInMillisecond = 'endTimeInMillisecond';
+  static const String durationInMillisecond = 'durationInMillisecond';
   static const String ignoreSystemApps = 'ignoreSystemApps';
   static const String packagesName = 'packagesName';
 

@@ -7,4 +7,6 @@ object MethodName {
     const val monitoringAppUsage = "monitoringAppUsage"
     const val configureAppMonitoringService = "configureAppMonitoringService"
     const val permissionStatus = "permissionStatus"
+    const val startFocusSession = "startFocusSession"
+    const val stopFocusSession = "stopFocusSession"
 }

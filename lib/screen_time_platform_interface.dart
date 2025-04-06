@@ -127,4 +127,13 @@ abstract class ScreenTimePlatform extends PlatformInterface {
   }) {
     throw UnimplementedError('streamAppUsage() has not been implemented.');
   }
+
+  Future<bool> startFocusSession({
+    List<String> packagesName = const [],
+    required int durationInMillisecond,
+  }) =>
+      throw UnimplementedError('startFocusSession() has not been implemented.');
+
+  Future<bool> stopFocusSession() =>
+      throw UnimplementedError('stopFocusSession() has not been implemented.');
 }

@@ -1,6 +1,7 @@
 package com.solusibejo.screen_time.service
 
 import android.accessibilityservice.AccessibilityService
+import android.accessibilityservice.AccessibilityServiceInfo
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager
@@ -15,7 +16,6 @@ import android.view.accessibility.AccessibilityEvent
 import com.solusibejo.screen_time.const.UsageInterval
 import io.flutter.Log
 import java.io.ByteArrayOutputStream
-import java.util.*
 
 /**
  * AccessibilityService for monitoring current foreground app
@@ -96,15 +96,8 @@ class AppMonitoringService : AccessibilityService() {
             getInstance()?.lookbackTimeMs = timeMs
         }
 
-        fun isServiceRunning(context: Context): Boolean {
-            val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
-                if (AppMonitoringService::class.java.name == service.service.className) {
-                    return true
-                }
-            }
-            return false
-        }
+        val isRunning: Boolean
+            get() = instance?.isMonitoring ?: false
     }
 
     private var isMonitoring = false
@@ -112,7 +105,15 @@ class AppMonitoringService : AccessibilityService() {
     override fun onServiceConnected() {
         super.onServiceConnected()
         instance = this
-        Log.d(TAG, "Service connected")
+        isMonitoring = true
+
+        val info = AccessibilityServiceInfo()
+        info.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED
+        info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC
+        info.flags = AccessibilityServiceInfo.FLAG_REPORT_VIEW_IDS
+        serviceInfo = info
+
+        Log.d(TAG, "Accessibility service connected")
         if (listenerCount > 0) {
             startMonitoring()
         }
@@ -152,8 +153,6 @@ class AppMonitoringService : AccessibilityService() {
         }
     }
 
-    val isRunning: Boolean
-        get() = isMonitoring
 
     private fun checkCurrentApp() {
         val appData = getCurrentForegroundAppData()

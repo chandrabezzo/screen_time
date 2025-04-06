@@ -13,6 +13,7 @@ import 'src/model/app_usage.dart';
 import 'src/model/installed_app.dart';
 import 'src/model/screen_time_permission_type.dart';
 import 'src/model/usage_interval.dart';
+import 'src/util/json_converter_util.dart';
 
 /// An implementation of [ScreenTimePlatform] that uses method channels.
 class MethodChannelScreenTime extends ScreenTimePlatform {
@@ -34,7 +35,7 @@ class MethodChannelScreenTime extends ScreenTimePlatform {
     });
 
     return await Isolate.run(() async {
-      final map = await _convertToStringDynamicMap(result);
+      final map = await JsonConverterUtil.convertToStringDynamicMap(result);
       final response = BaseInstalledApp.fromJson(map);
       if (response.status) {
         return response.data;
@@ -94,7 +95,7 @@ class MethodChannelScreenTime extends ScreenTimePlatform {
         MethodName.appUsageData, arguments);
 
     return await Isolate.run(() async {
-      final map = await _convertToStringDynamicMap(result);
+      final map = await JsonConverterUtil.convertToStringDynamicMap(result);
       final response = BaseAppUsage.fromJson(map);
       if (response.status) {
         return response.data;
@@ -128,7 +129,7 @@ class MethodChannelScreenTime extends ScreenTimePlatform {
     }
     final result = await methodChannel.invokeMethod<Map<Object?, Object?>>(
         MethodName.monitoringAppUsage, arguments);
-    final map = await _convertToStringDynamicMap(result);
+    final map = await JsonConverterUtil.convertToStringDynamicMap(result);
     final response = BaseMonitoringAppUsage.fromJson(map);
     return response.data;
   }
@@ -166,7 +167,7 @@ class MethodChannelScreenTime extends ScreenTimePlatform {
     }).map((dynamic event) {
       // Convert the event data to the expected type
       if (event is Map) {
-        return _convertNestedMap(event);
+        return JsonConverterUtil.convertNestedMap(event);
       } else {
         throw PlatformException(
           code: 'INVALID_EVENT',
@@ -176,65 +177,26 @@ class MethodChannelScreenTime extends ScreenTimePlatform {
     });
   }
 
-  /// Helper method to convert the result from native code to the expected Dart type
-  Future<Map<String, dynamic>> _convertToStringDynamicMap(
-      Map<Object?, Object?>? result) async {
-    if (result == null) {
-      final error = result?['error'];
-      throw Exception(error);
-    }
-
-    return await Isolate.run(() {
-      final Map<String, dynamic> convertedMap = {};
-
-      result.forEach((key, value) {
-        if (key is String) {
-          if (value is Map) {
-            // Recursively convert nested maps
-            convertedMap[key] = _convertNestedMap(value);
-          } else if (value is List) {
-            // Convert lists
-            convertedMap[key] = _convertList(value);
-          } else {
-            // Direct assignment for primitive types
-            convertedMap[key] = value;
-          }
-        }
-      });
-
-      return convertedMap;
-    });
+  @override
+  Future<bool> startFocusSession({
+    List<String> packagesName = const [],
+    required int durationInMillisecond,
+  }) async {
+    final result = await methodChannel.invokeMethod<bool>(
+      MethodName.startFocusSession,
+      {
+        Argument.packagesName: packagesName,
+        Argument.durationInMillisecond: durationInMillisecond,
+      },
+    );
+    return result ?? false;
   }
 
-  /// Helper method to convert nested maps
-  dynamic _convertNestedMap(Map<dynamic, dynamic> map) {
-    final convertedMap = <String, dynamic>{};
-
-    map.forEach((key, value) {
-      if (key is String) {
-        if (value is Map) {
-          convertedMap[key] = _convertNestedMap(value);
-        } else if (value is List) {
-          convertedMap[key] = _convertList(value);
-        } else {
-          convertedMap[key] = value;
-        }
-      }
-    });
-
-    return convertedMap;
-  }
-
-  /// Helper method to convert lists
-  List<dynamic> _convertList(List<dynamic> list) {
-    return list.map((item) {
-      if (item is Map) {
-        return _convertNestedMap(item);
-      } else if (item is List) {
-        return _convertList(item);
-      } else {
-        return item;
-      }
-    }).toList();
+  @override
+  Future<bool> stopFocusSession() async {
+    final result = await methodChannel.invokeMethod<bool>(
+      MethodName.stopFocusSession,
+    );
+    return result ?? false;
   }
 }

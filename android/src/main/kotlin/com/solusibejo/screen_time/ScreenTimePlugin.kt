@@ -147,6 +147,21 @@ class ScreenTimePlugin: FlutterPlugin, MethodCallHandler, EventChannel.StreamHan
         )
         result.success(data)
       }
+      MethodName.startFocusSession -> {
+        val args = call.arguments as Map<String, Any?>
+        val durationInMillisecond = args[Argument.durationInMillisecond] as Int
+        val packagesName = args[Argument.packagesName] as List<*>?
+
+        val status = ScreenTimeMethod.startFocusSession(
+          packagesName?.filterIsInstance<String>() ?: mutableListOf(),
+          durationInMillisecond.toLong()
+        )
+        result.success(status)
+      }
+      MethodName.stopFocusSession -> {
+        val status = ScreenTimeMethod.stopFocusSession()
+        result.success(status)
+      }
       else -> result.notImplemented()
     }
   }

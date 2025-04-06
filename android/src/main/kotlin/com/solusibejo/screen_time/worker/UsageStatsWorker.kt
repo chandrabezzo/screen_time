@@ -1,4 +1,4 @@
-package com.solusibejo.screen_time.util
+package com.solusibejo.screen_time.worker
 
 import android.app.usage.UsageStatsManager
 import android.content.Context
