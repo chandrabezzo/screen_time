@@ -1,3 +1,6 @@
+## 0.4.1 - April 6, 2025
+* Improvement fetch app installed on android 13
+
 ## 0.4.0 - April 3, 2025
 * Centralized Request Permission
 * Centralized Permission Status

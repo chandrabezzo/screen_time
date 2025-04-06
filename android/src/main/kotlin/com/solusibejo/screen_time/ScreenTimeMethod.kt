@@ -39,8 +39,14 @@ object ScreenTimeMethod {
         try {
             val packageManager = context.packageManager
             val apps = ArrayList<ApplicationInfo>()
-
-            val installedApplications = packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+            
+            val installedApplications = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                packageManager.getInstalledApplications(PackageManager.ApplicationInfoFlags.of(PackageManager.GET_META_DATA.toLong()))
+            } else {
+                @Suppress("DEPRECATION")
+                packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
+            }
+            
             if(ignoreSystemApps){
                 val filtered = installedApplications.filter { app -> (app.flags and ApplicationInfo.FLAG_SYSTEM) == 0 }
                 apps.addAll(filtered)
