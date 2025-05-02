@@ -75,7 +75,7 @@ class ScreenTimeMethod {
                 var applicationsDict: [[String: Any]] = []
                 for application in applications {
                     applicationsDict.append([
-                        "name": application.localizedDisplayName ?? "",
+                        "name": application.localizedDisplayName ?? "-",
                         "token": String(describing: application.token),
                     ])
                 }
@@ -86,7 +86,7 @@ class ScreenTimeMethod {
                 var categoriesDict: [[String: Any]] = []
                 for category in categories {
                     categoriesDict.append([
-                        "name": category.localizedDisplayName,
+                        "name": category.localizedDisplayName ?? category.localizedDisplayName,
                         "token": String(describing: category.token)
                     ])
                 }
@@ -97,7 +97,7 @@ class ScreenTimeMethod {
                 var webDomainsDict: [[String: Any]] = []
                 for webDomain in webDomains {
                     webDomainsDict.append([
-                        "name": webDomain.domain,
+                        "name": webDomain.domain ?? "-",
                         "token": String(describing: webDomain.token)
                     ])
                 }
