@@ -86,7 +86,7 @@ class ScreenTimeMethod {
                 var categoriesDict: [[String: Any]] = []
                 for category in categories {
                     categoriesDict.append([
-                        "name": category.localizedDisplayName ?? category.localizedDisplayName,
+                        "name": category.localizedDisplayName ?? "-",
                         "token": String(describing: category.token)
                     ])
                 }
