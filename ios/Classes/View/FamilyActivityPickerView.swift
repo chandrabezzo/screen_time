@@ -11,41 +11,50 @@ import FamilyControls
 struct FamilyActivityPickerView: View {
     @State private var selection = FamilyActivitySelection()
     @State private var noAppsAlert = false
+    
     let onSelectionChanged: (FamilyActivitySelection) -> Void
     let onCancel: () -> Void
     
     var body: some View {
-        VStack(alignment: .center, spacing: 10) {
-            HStack(alignment: .center){
-                Button(action : {
+        VStack(alignment: .leading, spacing: 0) {
+            // Header with Cancel and Save buttons
+            HStack {
+                Button(action: {
                     onCancel()
                 }) {
-                    Text("Cancel").foregroundColor(.blue)
+                    Text("Cancel")
+                        .font(.system(size: 20))
+                        .fontWeight(Font.Weight.regular)
+                        .foregroundColor(.black)
                 }
                 Spacer()
-                Button(action : {
-                    if(selection.applications.isEmpty && selection.categories.isEmpty) {
+                Button(action: {
+                    if selection.applications.isEmpty && selection.categories.isEmpty {
                         noAppsAlert = true
                     } else {
                         onSelectionChanged(selection)
                     }
                 }) {
-                    Text("Save").foregroundColor(.blue)
+                    Text("Save")
+                        .font(.system(size: 20))
+                        .fontWeight(Font.Weight.regular)
+                        .foregroundColor(.black)
                 }
             }
+            .padding(.horizontal)
+            .padding(.vertical, 16)
+            
+            // FamilyActivityPicker for app selection
             FamilyActivityPicker(selection: $selection)
-                .padding(.all, 10)
+                .padding(.horizontal, 10)
         }
-        .font(.body)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-        .padding(EdgeInsets(top: 8, leading: 15, bottom: 20, trailing: 15))
-        .foregroundColor(.white)
-        
+        .background(Color(.systemBackground))
         .interactiveDismissDisabled()
         .alert(isPresented: $noAppsAlert) {
             Alert(
-                title: Text("No Apps Selected"),
-                message: Text("Please select at least 1 app.")
+                title: Text("No App/Category Selected"),
+                message: Text("Please select at least 1 app/category.")
             )
         }
     }
