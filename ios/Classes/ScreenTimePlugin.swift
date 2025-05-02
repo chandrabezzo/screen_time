@@ -38,6 +38,8 @@ public class ScreenTimePlugin: NSObject, FlutterPlugin {
                     result(String(describing: response))
                 }
             }
+        case MethodName.showFamilyActivityPicker:
+            ScreenTimeMethod.showFamilyActivityPicker(result: result)
         default:
           result(FlutterMethodNotImplemented)
     }

@@ -1,5 +1,6 @@
 class MethodName {
   static const installedApps = "installedApps";
+  static const showFamilyActivityPicker = 'showFamilyActivityPicker';
   static const requestPermission = 'requestPermission';
   static const appUsageData = 'appUsageData';
   static const permissionStatus = 'permissionStatus';

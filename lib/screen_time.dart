@@ -32,6 +32,10 @@ class ScreenTime {
     );
   }
 
+  Future<Map<String, dynamic>> showFamilyActivityPicker() {
+    return ScreenTimePlatform.instance.showFamilyActivityPicker();
+  }
+
   /// Request Screen Time permission from the user.
   ///
   /// Parameters:
