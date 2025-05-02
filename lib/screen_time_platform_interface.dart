@@ -36,6 +36,11 @@ abstract class ScreenTimePlatform extends PlatformInterface {
     throw UnimplementedError('installedApps() has not been implemented.');
   }
 
+  Future<Map<String, dynamic>> showFamilyActivityPicker() {
+    throw UnimplementedError(
+        'showFamilyActivityPicker() has not been implemented.');
+  }
+
   /// Returns a [RequestPermissionModel] with the following keys:
   /// - `status`: The current authorization status `true` is requested `false`: failed to request.
   /// - `error`: Error message if failed to request.
