@@ -120,6 +120,11 @@ class MockScreenTimePlatform
   Future<bool> get isOnPausedBlockingApps async {
     return false;
   }
+
+  @override
+  Future<Map<String, dynamic>> showFamilyActivityPicker() {
+    throw UnimplementedError();
+  }
 }
 
 void main() {

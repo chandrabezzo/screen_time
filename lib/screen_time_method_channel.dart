@@ -46,6 +46,16 @@ class MethodChannelScreenTime extends ScreenTimePlatform {
   }
 
   @override
+  Future<Map<String, dynamic>> showFamilyActivityPicker() async {
+    final result = await methodChannel.invokeMethod<Map<Object?, Object?>>(
+        MethodName.showFamilyActivityPicker);
+    return await Isolate.run(() async {
+      final map = await _convertToStringDynamicMap(result);
+      return map;
+    });
+  }
+
+  @override
   Future<bool> requestPermission({
     UsageInterval interval = UsageInterval.daily,
     ScreenTimePermissionType permissionType = ScreenTimePermissionType.appUsage,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -280,32 +281,44 @@ class _MainPageState extends State<MainPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: _buildMethodButton(
-                          'Fetch Installed Application',
-                          () async {
-                            showDialog(
-                              context: context,
-                              builder:
-                                  (context) => const Center(
-                                    child: CircularProgressIndicator(),
-                                  ),
-                            );
-
-                            final ctx = context;
-                            final apps = await _screenTime.installedApps();
-
-                            if (!ctx.mounted) return;
-                            Navigator.pop(ctx);
-
-                            Navigator.push(
-                              ctx,
-                              MaterialPageRoute(
+                        child: Visibility(
+                          visible: Platform.isAndroid,
+                          replacement: _buildMethodButton(
+                            'Show Family Activity Picker',
+                            () => _executeMethod(() async {
+                              final selected =
+                                  await _screenTime.showFamilyActivityPicker();
+                              return jsonEncode({'result': selected});
+                            }),
+                          ),
+                          child: _buildMethodButton(
+                            'Fetch Installed Application',
+                            () async {
+                              showDialog(
+                                context: context,
                                 builder:
-                                    (context) =>
-                                        InstalledAppsPage(installedApps: apps),
-                              ),
-                            );
-                          },
+                                    (context) => const Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
+                              );
+
+                              final ctx = context;
+                              final apps = await _screenTime.installedApps();
+
+                              if (!ctx.mounted) return;
+                              Navigator.pop(ctx);
+
+                              Navigator.push(
+                                ctx,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => InstalledAppsPage(
+                                        installedApps: apps,
+                                      ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ],
