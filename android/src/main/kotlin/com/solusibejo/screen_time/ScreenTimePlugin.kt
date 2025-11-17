@@ -108,8 +108,8 @@ class ScreenTimePlugin: FlutterPlugin, MethodCallHandler, EventChannel.StreamHan
       }
       MethodName.appUsageData -> {
         val args = call.arguments as Map<String, Any?>
-        val startTimeInMillisecond = args[Argument.startTimeInMillisecond] as Int?
-        val endTimeInMillisecond = args[Argument.endTimeInMillisecond] as Int?
+        val startTimeInMillisecond = args[Argument.startTimeInMillisecond] as Number?
+        val endTimeInMillisecond = args[Argument.endTimeInMillisecond] as Number?
         val usageInterval = args[Argument.interval] as String?
             ?: UsageInterval.DAILY.name.lowercase()
         val packagesName = args[Argument.packagesName] as List<*>?

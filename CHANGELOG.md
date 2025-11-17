@@ -1,3 +1,7 @@
+## 0.10.3 - November 17, 2025
+* Bug Fix: Querying appUsageData with previous dates returns a type error of converting long to int. Switched appUsageData to take in a Number rather than int for start/end milliseconds.
+* Bug Fix: Querying appUsageData with previous dates that have no screen time will return the data from the most recent previous date that has data rather than returning zero. Now, instead of returning all data (previous non-zero day if zero), filter down query results to those specific to that date.
+
 ## 0.10.2 - May 1, 2025
 * Handle same action when request permission app usage, accessibility settings, and draw overlay to request family controls
 * Handle same action when check permission app usage, accessibility settings, and draw overlay to check family controls
